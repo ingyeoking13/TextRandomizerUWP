@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -12,6 +13,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -34,10 +36,13 @@ namespace eeee_textRandomizeUWP
 
         public MainPage()
         {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
+            ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
             this.InitializeComponent();
 
             myRandomizer = new Randomizer();
             uploadedFileLists = new FileLists();
+
         }
 
         private void MainFileList_DragOver(object sender, DragEventArgs e)
@@ -122,30 +127,60 @@ namespace eeee_textRandomizeUWP
 
             StorageFile another_file= null;
             int k = 1;
+            int from = 0, to = 0;
+            Random random = new Random();
 
             if (myRandomizer.Option1)
             {
                 TextBox inputTextBox = new TextBox();
+
                 ContentDialog dialog = new ContentDialog();
                 dialog.Content = inputTextBox;
                 dialog.Title = "뛰어넘을 글자 수를 입력해주세요";
                 dialog.PrimaryButtonText = "Ok";
+                inputTextBox.Text = "random";
+
                 if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                 {
-                    try
+                    if (inputTextBox.Text == "random")
                     {
-                        k = Int32.Parse(inputTextBox.Text);
-                    }
-                    catch
-                    {
-                        await new MessageDialog("숫자를 입력해야합니다.")
-                        {
-                            Title = "문제발생!"
-                        }.ShowAsync();
+                        Grid st = input_StackPanel();
 
-                        return;
+                        if (await new ContentDialog()
+                        {
+                            Title = "랜덤 시작점과 끝점을 넣어주세요",
+                            Content = st,
+                            PrimaryButtonText =  "OK"
+                        }.ShowAsync() == ContentDialogResult.Primary)
+                        {
+                            try
+                            {
+                                from =Int32.Parse((st.Children[0] as TextBox).Text);
+                                to =Int32.Parse((st.Children[2] as TextBox).Text);
+                                k = random.Next(from, to + 1);
+                            }
+                            catch
+                            {
+                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                                return;
+                            }
+                        }
+                        else return;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            k = Int32.Parse(inputTextBox.Text);
+                        }
+                        catch
+                        {
+                            await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                            return;
+                        }
                     }
                 }
+                else return;
             }
 
             if (myRandomizer.Option2)
@@ -161,6 +196,8 @@ namespace eeee_textRandomizeUWP
             if (myRandomizer.Option3)
             {
                 TextBox tb = new TextBox();
+                tb.Text = "random";
+
                 if (
                     await new ContentDialog()
                     {
@@ -170,24 +207,53 @@ namespace eeee_textRandomizeUWP
                     }.ShowAsync() == ContentDialogResult.Primary
                 )
                 {
-                    try
+                    if (tb.Text == "random")
                     {
-                        k = Int32.Parse(tb.Text);
-                    }
-                    catch
-                    {
-                        await new MessageDialog("숫자를 입력해야합니다.")
+                        Grid st = input_StackPanel();
+
+                        if (await new ContentDialog()
                         {
-                            Title = "문제발생!"
-                        }.ShowAsync();
-                        return;
+                            Title = "랜덤 시작점과 끝점을 넣어주세요",
+                            Content = st,
+                            PrimaryButtonText = "OK"
+                        }.ShowAsync() == ContentDialogResult.Primary)
+                        {
+                            try
+                            {
+                                from = Int32.Parse((st.Children[0] as TextBox).Text);
+                                to = Int32.Parse((st.Children[2] as TextBox).Text);
+                                k = random.Next(from, to + 1);
+                            }
+                            catch
+                            {
+                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                                return;
+                            }
+                        }
+                        else return; ;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            k = Int32.Parse(tb.Text);
+                        }
+                        catch
+                        {
+                            await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                            return;
+                        }
                     }
                 }
+                else return;
             }
 
             if (myRandomizer.Option4)
             {
                 TextBox tb = new TextBox();
+                tb.Foreground = new SolidColorBrush(Colors.Gray);
+                tb.Text = "random";
+
                 if (
                     await new ContentDialog()
                     {
@@ -197,19 +263,45 @@ namespace eeee_textRandomizeUWP
                     }.ShowAsync() == ContentDialogResult.Primary
                 )
                 {
-                    try
+                    if (tb.Text == "random")
                     {
-                        k = Int32.Parse(tb.Text);
-                    }
-                    catch
-                    {
-                        await new MessageDialog("숫자를 입력해야합니다.")
+                        Grid st = input_StackPanel();
+
+                        if (await new ContentDialog()
                         {
-                            Title = "문제발생!"
-                        }.ShowAsync();
-                        return;
+                            Title = "랜덤 시작점과 끝점을 넣어주세요",
+                            Content = st,
+                            PrimaryButtonText = "OK"
+                        }.ShowAsync() == ContentDialogResult.Primary)
+                        {
+                            try
+                            {
+                                from = Int32.Parse((st.Children[0] as TextBox).Text);
+                                to = Int32.Parse((st.Children[2] as TextBox).Text);
+                                k = random.Next(from, to + 1);
+                            }
+                            catch
+                            {
+                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                                return;
+                            }
+                        }
+                        else return;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            k = Int32.Parse(tb.Text);
+                        }
+                        catch
+                        {
+                            await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
+                            return;
+                        }
                     }
                 }
+                else return;
             }
 
             await new MessageDialog("결과 파일을 저장할 대상 폴더를 지정해주세요.")
@@ -227,7 +319,6 @@ namespace eeee_textRandomizeUWP
             if (folder != null)
             {
                 ProgressBar progressBar = new ProgressBar();
-                progressBar.Foreground = new SolidColorBrush(Color.FromArgb(210, 210, 210, 0));
                 progressBar.IsIndeterminate = true;
 
                 ContentDialog progress_dialog = new ContentDialog()
@@ -245,6 +336,11 @@ namespace eeee_textRandomizeUWP
             }
         }
 
+        private void Tb_GotFocus(object sender, RoutedEventArgs e)
+        {
+//            (sender as TextBox).Text = ""; 
+        }
+
         private void erase_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as FrameworkElement).DataContext;
@@ -255,6 +351,41 @@ namespace eeee_textRandomizeUWP
         private void HelpAppBar_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(HelpPage));
+        }
+
+        private Grid input_StackPanel()
+        {
+            Grid st = new Grid();
+            st.RowDefinitions.Add(new RowDefinition());
+            st.RowDefinitions.Add(new RowDefinition());
+            st.RowDefinitions.Add(new RowDefinition());
+
+            TextBox[] in1 = new TextBox[]
+            {
+                new TextBox()
+                {
+                    Margin = new Thickness(10, 10, 0, 0),
+                    PlaceholderText = "number"
+                },
+                new TextBox()
+                {
+                    Margin = new Thickness(10, 10, 0, 0),
+                    PlaceholderText = "number"
+                }
+            };
+            TextBlock text = new TextBlock() {
+                Text = " ~ ",
+                Margin = new Thickness(10, 10, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            Grid.SetRow(in1[0], 0);
+            st.Children.Add(in1[0]);
+            Grid.SetRow(text, 1);
+            st.Children.Add(text);
+            Grid.SetRow(in1[1], 2);
+            st.Children.Add(in1[1]);
+            return st;
         }
     }
 }

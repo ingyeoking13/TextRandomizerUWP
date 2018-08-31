@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Contacts;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,7 +28,6 @@ namespace eeee_textRandomizeUWP
         public HelpPage()
         {
             this.InitializeComponent();
-
 
             useText.Text = "이 프로그램은 텍스트 파일을 이용하여 또 다른 텍스트 파일을 생성하는 프로그램입니다.";
             useText.Text += Environment.NewLine;
@@ -68,9 +68,9 @@ namespace eeee_textRandomizeUWP
             Option4Text.Text += Environment.NewLine;
             Option4Text.Text += "이 옵션에서는 추가로 숫자를 입력받습니다. 파일에 이 숫자만큼의 개행을 임의로 삽입합니다.";
 
-            myProfile.Text += "Hello, This app is for who want to reproduce texts file with already have one.";
+            myProfile.Text += "Hello, This app is for who want to reproduce text files from a text file already have one.";
             myProfile.Text += Environment.NewLine;
-            myProfile.Text += "I hope this app will be helpful to ,especially, a writer. (...a Political activities on the Internet(LOL)). ";
+            myProfile.Text += "I hope this app will be helpful to ,especially, a writer. (...or a Political activities on the Internet(LOL)). ";
             myProfile.Text += Environment.NewLine;
             myProfile.Text += "Enjoy My first App";
         }

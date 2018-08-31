@@ -122,8 +122,43 @@ namespace eeee_textRandomizeUWP.Models
             }
             else if (Option4)
             {
-                
+                foreach (var i in fl)
+                {
+                    List<string> sL = new List<string>();
+                    using (Stream s = await i.originFile.OpenStreamForReadAsync())
+                    {
+                        using (StreamReader sr = new StreamReader(s))
+                        {
+                            string tmp;
+                            while((tmp = await sr.ReadLineAsync()) != null) sL.Add(tmp);
+                        }
+                    }
 
+                    await i.setOutFile(folder);
+                    StringBuilder str= new StringBuilder();
+                    int cnt = 0;
+                    Random rnd = new Random((int)DateTime.Now.Ticks);
+
+                    for(int j=0; j<sL.Count; j++)
+                    {
+                        str.Append(sL[j]);
+                        str.Append(Environment.NewLine);
+
+                        if (k > cnt)
+                        {
+                            if (k - cnt < sL.Count - j)
+                            {
+                                if(rnd.Next(0, 2)==1)
+                                {
+                                    cnt++;
+                                    str.Append(Environment.NewLine);
+                                }
+                            }
+                            else str.Append(Environment.NewLine);
+                        }
+                    }
+                    await FileIO.WriteTextAsync(i.outputFile, str.ToString());
+                }
             }
             else
             {
@@ -149,7 +184,7 @@ namespace eeee_textRandomizeUWP.Models
         private List<string> doOption1(StringBuilder str, int k)
         {
             string[] vs =
-                str.ToString().Split(new[] { "\n", "\r\n", "\r" }, StringSplitOptions.None);
+                str.ToString().Split(new[] { "\n", "\r\n", "\r", Environment.NewLine }, StringSplitOptions.None);
             List<String> ret = new List<string>();
 
             foreach (string s in vs)
@@ -165,10 +200,12 @@ namespace eeee_textRandomizeUWP.Models
                     {
                         int cutLen = i + 1;
                         int jump = 0;
-                        if (i + 1 < s.Length && s[i + 1] == ' ') jump++;
+                        while (i + 1 < s.Length && s[i + 1] == ' ') { i++; jump++; }
 
                         ret.Add(s.Substring(0, cutLen + jump) + Environment.NewLine);
-                        ret.Add(s.Substring(cutLen + jump) + Environment.NewLine);
+
+                        string tmp = s.Substring(cutLen + jump);
+                        if (tmp != "") ret.Add(tmp+ Environment.NewLine);
 
                         break;
                     }
@@ -188,8 +225,5 @@ namespace eeee_textRandomizeUWP.Models
             if (c == '.' || c== ',' ||  c=='?' || c=='!') return true;
             return false;
         }
-
     }
 }
-
-

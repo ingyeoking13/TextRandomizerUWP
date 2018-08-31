@@ -9,7 +9,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-
     <Grid
             AllowDrop="True"
             DragOver="Canvas_DragOver" 

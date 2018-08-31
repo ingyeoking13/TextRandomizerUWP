@@ -8,6 +8,7 @@
     xmlns:Windows10FallCreatorsUpdate="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
     <Page.Resources>
         <Style TargetType="PivotItem">
             <Setter Property="Margin" Value="10,10,10,0"/>
@@ -17,16 +18,17 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
         <Pivot Title="Randomizer" ScrollViewer.VerticalScrollMode="Auto">
             <PivotItem Header="사용법">
                 <TextBlock Name="useText"/>
             </PivotItem>
-            <PivotItem Header="옵션 1" Background="{ThemeResource SystemControlAltLowAcrylicWindowBrush}">
+            <PivotItem Header="옵션 1">
                 <StackPanel>
                     <TextBlock Text="Input" FontFamily="Consolas" FontSize="20"/>
                     <StackPanel Orientation="Horizontal">
@@ -111,7 +113,10 @@
                         <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/ingyeoking13"/>
                         <HyperlinkButton Content="StackOverflow" NavigateUri="https://stackoverflow.com/users/6697909/jeong-yo-han?tab=profile"/>
                     </StackPanel>
-                    <TextBlock Grid.Column="1"  Name="myProfile" Margin="20,0,0,0" TextWrapping="Wrap"/>
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                        <TextBlock Name="myProfile" TextWrapping="Wrap"/>
+                        <TextBlock Text="&#xE899;" FontFamily="Segoe MDL2 Assets" FontSize="35" Margin="0,20,0,0"/>
+                    </StackPanel>
                 </Grid>
             </PivotItem>
         </Pivot>
