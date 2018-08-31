@@ -10,9 +10,9 @@ any MSFT device.(exclude XBOX)
 
 ## 3. Execute Images
 
-![](./images/ĸó.PNG)
+![](./images/capture.PNG)
 
-![](./images/ĸó2.PNG)
+![](./images/capture2.PNG)
 
 ## 4. DownLoad Link
 N/A  
