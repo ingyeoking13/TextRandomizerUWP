@@ -127,8 +127,8 @@ namespace eeee_textRandomizeUWP
 
             StorageFile another_file= null;
             int k = 1;
+            bool doRandom = false;
             int from = 0, to = 0;
-            Random random = new Random();
 
             if (myRandomizer.Option1)
             {
@@ -157,7 +157,7 @@ namespace eeee_textRandomizeUWP
                             {
                                 from =Int32.Parse((st.Children[0] as TextBox).Text);
                                 to =Int32.Parse((st.Children[2] as TextBox).Text);
-                                k = random.Next(from, to + 1);
+                                doRandom = true;
                             }
                             catch
                             {
@@ -222,7 +222,7 @@ namespace eeee_textRandomizeUWP
                             {
                                 from = Int32.Parse((st.Children[0] as TextBox).Text);
                                 to = Int32.Parse((st.Children[2] as TextBox).Text);
-                                k = random.Next(from, to + 1);
+                                doRandom = true;
                             }
                             catch
                             {
@@ -278,7 +278,7 @@ namespace eeee_textRandomizeUWP
                             {
                                 from = Int32.Parse((st.Children[0] as TextBox).Text);
                                 to = Int32.Parse((st.Children[2] as TextBox).Text);
-                                k = random.Next(from, to + 1);
+                                doRandom = true;
                             }
                             catch
                             {
@@ -330,21 +330,15 @@ namespace eeee_textRandomizeUWP
                 progress_dialog.ShowAsync();
 #pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
 
-                await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k);
+                await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k, doRandom, from, to);
                 progress_dialog.Hide();
 
             }
         }
 
-        private void Tb_GotFocus(object sender, RoutedEventArgs e)
-        {
-//            (sender as TextBox).Text = ""; 
-        }
-
         private void erase_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as FrameworkElement).DataContext;
-            //uploadedFileLists.Remove(MainFileList.Items.IndexOf(item));
             uploadedFileLists.Remove(item as UploadedFile);
         }
 

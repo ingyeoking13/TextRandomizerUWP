@@ -26,10 +26,11 @@ namespace eeee_textRandomizeUWP.Models
             return k;
         }
 
-       public async Task<List<string>> DoRandom(FileLists fl, StorageFolder folder, StorageFile another_file, int k)
+       public async Task<List<string>> DoRandom(FileLists fl, StorageFolder folder, StorageFile another_file, int k, bool doRandom, int from, int to)
        {
             FileLists retLists = new FileLists();
             List<string> encodingList = new List<string>();
+            Random random = new Random(DateTime.Now.Millisecond);
 
             if (Option1)
             {
@@ -44,12 +45,11 @@ namespace eeee_textRandomizeUWP.Models
                         {
                             string str = await sr.ReadToEndAsync();
                             StringBuilder stringBuilder = new StringBuilder(str);
-                            List<string> ans = doOption1(stringBuilder, k);
+                            List<string> ans =new List<string>();
+                            if (doRandom) ans = doOption1(stringBuilder, random.Next(from, to + 1));
+                            else ans = doOption1(stringBuilder, k);
                             StringBuilder ret = new StringBuilder();
-                            foreach (var j in ans)
-                            {
-                                ret.Append(j);
-                            }
+                            foreach (var j in ans) ret.Append(j);
                             await FileIO.WriteTextAsync(i.outputFile, ret.ToString());
                         }
                     }
@@ -96,6 +96,7 @@ namespace eeee_textRandomizeUWP.Models
                             while (true)
                             {
                                 List<string> vs = new List<string>();
+                                if (doRandom) k = random.Next(from, to + 1);
                                 for (int i = 0; i < k; i++)
                                 {
                                    string tmp = await sr.ReadLineAsync();
@@ -137,7 +138,7 @@ namespace eeee_textRandomizeUWP.Models
                     await i.setOutFile(folder);
                     StringBuilder str= new StringBuilder();
                     int cnt = 0;
-                    Random rnd = new Random((int)DateTime.Now.Ticks);
+                    if (doRandom) k = random.Next(from, to + 1);
 
                     for(int j=0; j<sL.Count; j++)
                     {
@@ -148,7 +149,7 @@ namespace eeee_textRandomizeUWP.Models
                         {
                             if (k - cnt < sL.Count - j)
                             {
-                                if(rnd.Next(0, 2)==1)
+                                if(random.Next(0, 2)==1)
                                 {
                                     cnt++;
                                     str.Append(Environment.NewLine);
