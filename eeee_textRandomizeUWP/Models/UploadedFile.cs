@@ -39,9 +39,9 @@ namespace eeee_textRandomizeUWP.Models
         {
             var rand = new Random();
             string charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            StringBuilder result = new StringBuilder(13);
+            StringBuilder result = new StringBuilder(7);
 
-            for (int i=0; i<13; i++)
+            for (int i=0; i<7; i++)
             {
                 result.Append(charset[rand.Next(charset.Length)]);
             }

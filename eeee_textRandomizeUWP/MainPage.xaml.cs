@@ -12,6 +12,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI;
+using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -304,10 +305,12 @@ namespace eeee_textRandomizeUWP
                 else return;
             }
 
+            /*
             await new MessageDialog("결과 파일을 저장할 대상 폴더를 지정해주세요.")
             {
                 Title = "폴더선택"
             }.ShowAsync();
+            */
 
             var picker = new Windows.Storage.Pickers.FolderPicker();
 

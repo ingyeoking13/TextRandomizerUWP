@@ -185,7 +185,7 @@ namespace eeee_textRandomizeUWP.Models
         private List<string> doOption1(StringBuilder str, int k)
         {
             string[] vs =
-                str.ToString().Split(new[] { "\n", "\r\n", "\r", Environment.NewLine }, StringSplitOptions.None);
+                str.ToString().Split(new[] {Environment.NewLine }, StringSplitOptions.None);
             List<String> ret = new List<string>();
 
             foreach (string s in vs)
@@ -206,7 +206,7 @@ namespace eeee_textRandomizeUWP.Models
                         ret.Add(s.Substring(0, cutLen + jump) + Environment.NewLine);
 
                         string tmp = s.Substring(cutLen + jump);
-                        if (tmp != "") ret.Add(tmp+ Environment.NewLine);
+                        if (tmp != "\r" && tmp != "\n" && tmp != "") ret.Add(tmp+ Environment.NewLine);
 
                         break;
                     }
