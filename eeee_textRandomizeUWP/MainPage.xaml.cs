@@ -34,6 +34,7 @@ namespace eeee_textRandomizeUWP
     {
         private FileLists uploadedFileLists { get; set; }
         private Randomizer myRandomizer;
+        private Queue<Tuple<StorageFile, String>> Q;
 
         public MainPage()
         {
@@ -41,6 +42,7 @@ namespace eeee_textRandomizeUWP
             ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
             this.InitializeComponent();
 
+            Q = new Queue<Tuple<StorageFile, string>>();
             myRandomizer = new Randomizer();
             uploadedFileLists = new FileLists();
 
@@ -333,7 +335,22 @@ namespace eeee_textRandomizeUWP
                 progress_dialog.ShowAsync();
 #pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
 
-                await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k, doRandom, from, to);
+                await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k, doRandom, from, to, Q);
+
+                while(Q.Count != 0)
+                {
+                    Tuple<StorageFile, string> now = Q.Dequeue();
+
+                    try
+                    {
+                        await FileIO.WriteTextAsync(now.Item1, now.Item2);
+                    }
+                    catch
+                    {
+                        Q.Enqueue(now);
+                    }
+                }
+
                 progress_dialog.Hide();
 
             }
