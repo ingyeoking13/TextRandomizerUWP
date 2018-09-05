@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -9,9 +10,9 @@ using Windows.Storage.FileProperties;
 
 namespace eeee_textRandomizeUWP.Models
 {
-    class UploadedFile
+    class UploadedFile : ICloneable
     {
-        public StorageFile originFile;
+        public StorageFile originFile { get; set; }
         public StorageFile outputFile { get; set; }
 
         public string inputName {get; private set; }
@@ -57,7 +58,14 @@ namespace eeee_textRandomizeUWP.Models
             {
                 outputFile = await folder.CreateFileAsync(outputName.ToString(), CreationCollisionOption.ReplaceExisting);
             }
+        }
 
+        public object Clone()
+        {
+            var file = new UploadedFile(originFile);
+            file.outputFile = outputFile;
+            file.outputName = outputName;
+            return file;
         }
     }
 }

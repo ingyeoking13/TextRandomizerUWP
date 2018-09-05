@@ -15,24 +15,13 @@ namespace eeee_textRandomizeUWP.Models
 {
     class Randomizer
     {
-        public bool Option1 { get; set; }
-        public bool Option2 { get; set; }
-        public bool Option3 { get; set; }
-        public bool Option4 { get; set; }
-
-        public String chkOption()
-        {
-            string k= string.Format("{0}, {1}, {2}, {3}", Option1.ToString(), Option2.ToString(), Option3.ToString(), Option4.ToString());
-            return k;
-        }
-
-       public async Task<List<string>> DoRandom(FileLists fl, StorageFolder folder, StorageFile another_file, int k, bool doRandom, int from, int to, Queue<Tuple<StorageFile, string>> Q)
+       public async Task<FileLists> DoRandom(FileLists fl, StorageFolder folder, StorageFile another_file, int k, bool doRandom, int from, int to, Queue<Tuple<StorageFile, string>> Q, int option)
        {
             FileLists retLists = new FileLists();
-            List<string> encodingList = new List<string>();
+
             Random random = new Random(DateTime.Now.Millisecond);
 
-            if (Option1)
+            if (option==1)
             {
                 foreach (UploadedFile i in fl)
                 {
@@ -51,6 +40,7 @@ namespace eeee_textRandomizeUWP.Models
                             StringBuilder ret = new StringBuilder();
                             foreach (var j in ans) ret.Append(j);
 
+                            retLists.Add(i);
                             try 
                             {
                                 await FileIO.WriteTextAsync(i.outputFile, ret.ToString());
@@ -64,7 +54,7 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
-            else if (Option2) //옵션2
+            else if (option==2) //옵션2
             {
                 if (another_file.IsAvailable)
                 {
@@ -85,6 +75,7 @@ namespace eeee_textRandomizeUWP.Models
                                         string appending = await sr.ReadToEndAsync();
                                         string appended = readed  + Environment.NewLine + appending;
 
+                                        retLists.Add(i);
                                         try
                                         {
                                             await FileIO.WriteTextAsync(i.outputFile, appended);
@@ -100,9 +91,8 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
-            else if (Option3)
+            else if (option==3)
             {
-
                 foreach(UploadedFile file in fl)
                 {
                     using (Stream s = await file.originFile.OpenStreamForReadAsync())
@@ -127,6 +117,7 @@ namespace eeee_textRandomizeUWP.Models
                                     vs.Add(tmp);
                                 }
                                 StringBuilder newTextsb = new StringBuilder();
+
                                 foreach (var i in vs)
                                 {
                                     newTextsb.Append(i);
@@ -134,6 +125,9 @@ namespace eeee_textRandomizeUWP.Models
                                 }
 
                                 await file.setOutFile(folder);
+                                UploadedFile ref_file = file.Clone() as UploadedFile;
+
+                                retLists.Add(ref_file);
                                 try
                                 {
                                     await FileIO.WriteTextAsync(file.outputFile, newTextsb.ToString());
@@ -148,7 +142,7 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
-            else if (Option4)
+            else if (option==4)
             {
                 foreach (var i in fl)
                 {
@@ -163,6 +157,8 @@ namespace eeee_textRandomizeUWP.Models
                     }
 
                     await i.setOutFile(folder);
+                    retLists.Add(i);
+
                     if (doRandom) k = random.Next(from, to + 1);
 
                     int tmp_cnt = k;
@@ -171,8 +167,8 @@ namespace eeee_textRandomizeUWP.Models
                         int now = random.Next(0, sL.Count);
 
                         if (sL[now] == "") continue;
-                        if (now - 1 < 0 || sL[now] == "") continue;
-                        if (now + 1 >= sL.Count || sL[now] == "") continue;
+                        if (now - 1 < 0 || sL[now-1] == "") continue;
+                        if (now + 1 >= sL.Count || sL[now+1] == "") continue;
 
                         sL.Insert(now, "");
                         k--;
@@ -186,6 +182,7 @@ namespace eeee_textRandomizeUWP.Models
                         str.Append(sL[j]);
                         str.Append(Environment.NewLine);
 
+                        /*
                         if (sL[j] == "") continue;
                         if (k > cnt)
                         {
@@ -195,6 +192,7 @@ namespace eeee_textRandomizeUWP.Models
                                 str.Append(Environment.NewLine);
                             }
                         }
+                        */
                     }
 
                     try
@@ -207,11 +205,14 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
+            /*
             else
             {
                 foreach (UploadedFile i in fl)
                 {
                     await i.setOutFile(folder);
+                    retLists.Add(i);
+
                     Stream s = await i.originFile.OpenStreamForReadAsync();
                     StreamReader sr = new StreamReader(s);
                     string str = await sr.ReadToEndAsync();
@@ -225,7 +226,8 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
-            return encodingList;
+            */
+            return retLists;
         }
 
         /// <summary>
