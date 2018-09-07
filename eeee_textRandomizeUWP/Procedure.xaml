@@ -26,6 +26,68 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBox" x:Key="From">
+                    <Setter Property="PlaceholderText" Value="From"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </Style>
+                <Style TargetType="TextBox" x:Key="To">
+                    <Setter Property="PlaceholderText" Value="To"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.Background>
+                <AcrylicBrush 
+                    BackgroundSource="HostBackdrop" 
+                    TintColor="White"
+                    FallbackColor="White"
+                    TintOpacity="0.7"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="옵션 1"/>
+                <TextBox Style="{StaticResource From}" Name="option1f" Text="{x:Bind hand.option1f, Mode=TwoWay}"/>
+                <TextBlock Text=" ~ "/>
+                <TextBox Style="{StaticResource To}" Name="option1t" Text="{x:Bind hand.option1t, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="옵션 2"/>
+                <Button HorizontalAlignment="Left" Name="option2fo" Content="파일열기" Click="option2fo_Click" Margin="0, 0, 0, 20" IsEnabled="False"/>
+                <SymbolIcon Name="option2fot" Symbol="Cancel" Foreground="Red"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="옵션 3"/>
+                <TextBox Style="{StaticResource From}" Name="option3f" Text="{x:Bind hand.option3f, Mode=TwoWay}"/>
+                <TextBlock Text=" ~ "/>
+                <TextBox Style="{StaticResource To}" Name="option3t" Text="{x:Bind hand.option3t, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+                <TextBlock Text="옵션 4"/>
+                <TextBox Style="{StaticResource From}" Name="option4f" Text="{x:Bind hand.option4f, Mode=TwoWay}"/>
+                <TextBlock Text=" ~ "/>
+                <TextBox Style="{StaticResource To}" Name="option4t" Text="{x:Bind hand.option4t, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4">
+                <TextBlock Text="옵션 5"/>
+                <TextBox Style="{StaticResource From}" Name="option5fc" Text="{x:Bind hand.option5fc, Mode=TwoWay}"/>
+            </StackPanel>
+        </Grid>
         <Grid Grid.Row="1" Grid.ColumnSpan="4" Background="White"/>
 
         <ListView 
@@ -38,9 +100,7 @@
             >
             <ListView.HeaderTemplate >
                 <DataTemplate>
-                    <Grid >
-                        <TextBlock Text="작업목록 클릭시 순서대로 작업 수행" />
-                    </Grid>
+                    <TextBlock Text="작업목록 클릭시 순서대로 작업 수행" TextWrapping="Wrap"/>
                 </DataTemplate> 
             </ListView.HeaderTemplate>
             <ListView.ItemTemplate>
@@ -53,18 +113,14 @@
         </ListView>
 
         <ListView 
-            Header="위에 있는 것 부터 작업 시작"
             Grid.Row="1"
             Margin="10, 10, 0, 0"
             Grid.Column="2"
             ItemsSource="{x:Bind myProc}" 
-            IsItemClickEnabled="True" 
-            >
+            IsItemClickEnabled="True">
             <ListView.HeaderTemplate >
                 <DataTemplate>
-                    <Grid >
-                        <TextBlock Text="위에 있는 작업부터 수행합니다."/>
-                    </Grid>
+                    <TextBlock Text="위에 있는 작업부터 수행합니다." TextWrapping="Wrap"/> 
                 </DataTemplate> 
             </ListView.HeaderTemplate>
             <ListView.ItemTemplate>

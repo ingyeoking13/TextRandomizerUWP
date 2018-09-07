@@ -9,18 +9,26 @@ using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
 namespace eeee_textRandomizeUWP.Models
 {
-    class Procedure
+    class Hand
     {
 
         public Queue<int> job = new Queue<int>();
         private Randomizer myRandomizer= new Randomizer();
         private Queue<Tuple<StorageFile, string>> Q = new Queue<Tuple<StorageFile,string>>();
+        public string option1f { get; set; }
+        public string option1t { get; set; }
+        public string option3f { get; set; }
+        public string option3t { get; set; }
+        public string option4f { get; set; }
+        public string option4t { get; set; }
+        public string option5fc { get; set; }
 
-        public async Task DoJob(FileLists uploadedFileLists)
+        public async Task<bool> DoJob(FileLists uploadedFileLists, StorageFile another_file)
         {
             FileLists beforeLists = new FileLists();
             FileLists afterLists = new FileLists();
@@ -30,14 +38,14 @@ namespace eeee_textRandomizeUWP.Models
                 Title = "폴더선택"
             }.ShowAsync();
 
-            var picker = new Windows.Storage.Pickers.FolderPicker();
+            var picker = new FolderPicker();
 
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
             picker.FileTypeFilter.Add("*");
 
             StorageFolder folder = await picker.PickSingleFolderAsync();
 
-            if (folder == null) return;
+            if (folder == null) return true;
 
             int mycnt = 1;
 
@@ -45,273 +53,81 @@ namespace eeee_textRandomizeUWP.Models
             {
                 int now = job.Dequeue();
 
-                StorageFile another_file= null;
                 int k = 1;
-                bool doRandom = false;
+                bool doRandom = true;
                 int from = 0, to = 0;
-
                 if (now == 1)
                 {
-                    TextBox inputTextBox = new TextBox();
-
-                    ContentDialog dialog = new ContentDialog();
-                    dialog.Content = inputTextBox;
-                    dialog.Title = "(옵션1) 뛰어넘을 글자 수를 입력해주세요";
-                    dialog.PrimaryButtonText = "Ok";
-                    inputTextBox.Text = "random";
-
-                    if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                    {
-                        if (inputTextBox.Text == "random")
-                        {
-                            Grid st = input_StackPanel();
-
-                            if (await new ContentDialog()
-                            {
-                                Title = "랜덤 시작점과 끝점을 넣어주세요",
-                                Content = st,
-                                PrimaryButtonText =  "OK"
-                            }.ShowAsync() == ContentDialogResult.Primary)
-                            {
-                                try
-                                {
-                                    from =int.Parse((st.Children[0] as TextBox).Text);
-                                    to =int.Parse((st.Children[2] as TextBox).Text);
-                                    doRandom = true;
-                                }
-                                catch
-                                {
-                                    await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                    return;
-                                }
-                            }
-                            else return;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                k = int.Parse(inputTextBox.Text);
-                            }
-                            catch
-                            {
-                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                return;
-                            }
-                        }
-                    }
-                    else return;
+                    from = int.Parse(option1f);
+                    to = int.Parse(option1t);
                 }
-                if (now == 2)
+                else if (now == 2) { }
+                else if (now == 3)
                 {
-                    await new MessageDialog("(옵션2) 준비된 텍스트 파일을 선택해주세요") { Title = "파일 선택" }.ShowAsync();
-                    FileOpenPicker another_picker = new FileOpenPicker();
-                    another_picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-                    another_picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
-                    another_picker.FileTypeFilter.Add(".txt");
-                    another_file = await another_picker.PickSingleFileAsync();
+                    from = int.Parse(option3f);
+                    to = int.Parse(option3t);
                 }
-                if (now == 3)
+                else if (now == 4)
                 {
-                    TextBox tb = new TextBox();
-                    tb.Text = "random";
-
-                    if (
-                        await new ContentDialog()
-                        {
-                            Content = tb,
-                            Title = "(옵션3) 자를 라인 수를 입력해주세요",
-                            PrimaryButtonText = "OK"
-                        }.ShowAsync() == ContentDialogResult.Primary
-                    )
-                    {
-                        if (tb.Text == "random")
-                        {
-                            Grid st = input_StackPanel();
-
-                            if (await new ContentDialog()
-                            {
-                                Title = "랜덤 시작점과 끝점을 넣어주세요",
-                                Content = st,
-                                PrimaryButtonText = "OK"
-                            }.ShowAsync() == ContentDialogResult.Primary)
-                            {
-                                try
-                                {
-                                    from = int.Parse((st.Children[0] as TextBox).Text);
-                                    to = int.Parse((st.Children[2] as TextBox).Text);
-
-                                    doRandom = true;
-                                }
-                                catch
-                                {
-                                    await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                    return;
-                                }
-                            }
-                            else return;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                k = int.Parse(tb.Text);
-                            }
-                            catch
-                            {
-                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                return;
-                            }
-                        }
-                    }
-                    else return;
+                    from = int.Parse(option4f);
+                    to = int.Parse(option4t);
                 }
-                if (now == 4)
+                else if (now==5)
                 {
-                    TextBox tb = new TextBox();
-                    tb.Foreground = new SolidColorBrush(Colors.Gray);
-                    tb.Text = "random";
-
-                    if (
-                        await new ContentDialog()
-                        {
-                            Content = tb,
-                            Title = "(옵션4) 생설 할 빈 줄 수를 입력해주세요",
-                            PrimaryButtonText = "OK"
-                        }.ShowAsync() == ContentDialogResult.Primary
-                    )
-                    {
-                        if (tb.Text == "random")
-                        {
-                            Grid st = input_StackPanel();
-
-                            if (await new ContentDialog()
-                            {
-                                Title = "랜덤 시작점과 끝점을 넣어주세요",
-                                Content = st,
-                                PrimaryButtonText = "OK"
-                            }.ShowAsync() == ContentDialogResult.Primary)
-                            {
-                                try
-                                {
-                                    from = int.Parse((st.Children[0] as TextBox).Text);
-                                    to = int.Parse((st.Children[2] as TextBox).Text);
-                                    doRandom = true;
-                                }
-                                catch
-                                {
-                                    await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                    return;
-                                }
-                            }
-                            else return;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                k = int.Parse(tb.Text);
-                            }
-                            catch
-                            {
-                                await new MessageDialog("숫자를 입력해야합니다.") { Title = "문제발생!" }.ShowAsync();
-                                return;
-                            }
-                        }
-                    }
-                    else return;
+                    from = int.Parse(option5fc);
                 }
+           
+                ProgressBar progressBar = new ProgressBar();
+                progressBar.IsIndeterminate = true;
 
-
-                if (folder != null)
+                ContentDialog progress_dialog = new ContentDialog()
                 {
-                    ProgressBar progressBar = new ProgressBar();
-                    progressBar.IsIndeterminate = true;
-
-                    ContentDialog progress_dialog = new ContentDialog()
-                    {
-                        Content = progressBar,
-                        Title = "작업중입니다"
-                    };
-    #pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
-                    progress_dialog.ShowAsync();
+                    Content = progressBar,
+                    Title = "옵션" + now.ToString() + " 작업중입니다"
+                };
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
+                progress_dialog.ShowAsync();
 #pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
 
-                    if (mycnt == 1)
+                if (mycnt == 1)
+                {
+                    afterLists = await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k, doRandom, from, to, Q, now);
+                }
+                else
+                {
+                    foreach(var i in afterLists)
                     {
-                        afterLists = await myRandomizer.DoRandom(uploadedFileLists, folder, another_file, k, doRandom, from, to, Q, now);
+                        i.originFile = i.outputFile;
                     }
-                    else
+                    beforeLists = afterLists;
+                    afterLists= await myRandomizer.DoRandom(beforeLists, folder, another_file, k, doRandom, from, to, Q, now);
+                    foreach(var i in beforeLists )
                     {
-                        foreach(var i in afterLists)
-                        {
-                            i.originFile = i.outputFile;
-                        }
-                        beforeLists = afterLists;
-                        afterLists= await myRandomizer.DoRandom(beforeLists, folder, another_file, k, doRandom, from, to, Q, now);
-                        foreach(var i in beforeLists )
-                        {
-                            try
-                            {
-                                await i.originFile.DeleteAsync();
-                            }
-                            catch { }
-                        }
-                    }
-                    mycnt++;
-                    while(Q.Count != 0)
-                    {
-                        Tuple<StorageFile, string> fff = Q.Dequeue();
-
                         try
                         {
-                            await FileIO.WriteTextAsync(fff.Item1, fff.Item2);
+                            await i.originFile.DeleteAsync();
                         }
-                        catch
-                        {
-                            Q.Enqueue(fff);
-                        }
+                        catch { }
                     }
-                    progress_dialog.Hide();
                 }
+                mycnt++;
+                while(Q.Count != 0)
+                {
+                    Tuple<StorageFile, string> fff = Q.Dequeue();
 
+                    try
+                    {
+                        await FileIO.WriteTextAsync(fff.Item1, fff.Item2);
+                    }
+                    catch
+                    {
+                        Q.Enqueue(fff);
+                    }
+                }
+                progress_dialog.Hide();
             }
+            return false;
         }
-
-        private Grid input_StackPanel()
-        {
-            Grid st = new Grid();
-            st.RowDefinitions.Add(new RowDefinition());
-            st.RowDefinitions.Add(new RowDefinition());
-            st.RowDefinitions.Add(new RowDefinition());
-
-            TextBox[] in1 = new TextBox[]
-            {
-                new TextBox()
-                {
-                    Margin = new Thickness(10, 10, 0, 0),
-                    PlaceholderText = "number"
-                },
-                new TextBox()
-                {
-                    Margin = new Thickness(10, 10, 0, 0),
-                    PlaceholderText = "number"
-                }
-            };
-            TextBlock text = new TextBlock() {
-                Text = " ~ ",
-                Margin = new Thickness(10, 10, 0, 0),
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-
-            Grid.SetRow(in1[0], 0);
-            st.Children.Add(in1[0]);
-            Grid.SetRow(text, 1);
-            st.Children.Add(text);
-            Grid.SetRow(in1[1], 2);
-            st.Children.Add(in1[1]);
-            return st;
-        }
-
     }
+    
 }

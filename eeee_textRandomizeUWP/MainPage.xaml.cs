@@ -116,30 +116,23 @@ namespace eeee_textRandomizeUWP
                 return;
             }
 
-            if (option1.IsOn == false && option2.IsOn == false && option3.IsOn == false && option4.IsOn == false )
+            if (option1.IsOn == false && option2.IsOn == false && option3.IsOn == false && option4.IsOn == false && option5.IsOn==false)
             {
-
                 await new MessageDialog("적어도 하나의 옵션을 선택해야합니다.\n")
                 {
                     Title = "문제발생!"
                 }.ShowAsync();
                 return;
-
             }
 
-            Models.Procedure hand = new Models.Procedure();
+            Models.Hand hand = new Models.Hand();
             List<int> proc_list = new List<int>();
 
-            Procedure ProcPage = new Procedure(option1.IsOn, option2.IsOn, option3.IsOn, option4.IsOn);
+            Procedure ProcPage = new Procedure(option1.IsOn, option2.IsOn, option3.IsOn, option4.IsOn, option5.IsOn);
             Procedure_FileLists parameters = new Procedure_FileLists();
             parameters.fileLists = uploadedFileLists; 
             parameters.procedure = ProcPage;
-            this.Frame.Navigate(typeof(Procedure), parameters);
-
-        }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            //uploadedFileLists.Clear();
+            Frame.Navigate(typeof(Procedure), parameters);
         }
 
         private void erase_Click(object sender, RoutedEventArgs e)
@@ -150,8 +143,7 @@ namespace eeee_textRandomizeUWP
 
         private void HelpAppBar_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(HelpPage));
+            Frame.Navigate(typeof(HelpPage));
         }
-
     }
 }

@@ -7,8 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:eeee_textRandomizeUWP.Models"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    >
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
     <Grid
             AllowDrop="True"
@@ -98,6 +97,7 @@
                     <ToggleSwitch Name="option2" Header="옵션2"/>
                     <ToggleSwitch Name="option3" Header="옵션3"/>
                     <ToggleSwitch Name="option4" Header="옵션4"/>
+                    <ToggleSwitch Name="option5" Header="옵션5"/>
                     <Button Content="모든 파일 지우기" Click="Button_Click" />
                     <TextBlock Name="result"/>
                 </StackPanel>
@@ -110,6 +110,5 @@
                 <AppBarButton Margin="20,0,0,0" Label="작업 수행" Icon="World"  Foreground="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" Click="StartButton_Click"/>
             </StackPanel>
         </Grid>
-
     </Grid>
 </Page>
