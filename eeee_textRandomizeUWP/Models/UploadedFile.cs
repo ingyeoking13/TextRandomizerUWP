@@ -42,7 +42,7 @@ namespace eeee_textRandomizeUWP.Models
             string charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             StringBuilder result = new StringBuilder(7);
 
-            for (int i=0; i<7; i++)
+            for (int i=0; i<10; i++)
             {
                 result.Append(charset[rand.Next(charset.Length)]);
             }
@@ -56,7 +56,7 @@ namespace eeee_textRandomizeUWP.Models
 
             if (folder != null)
             {
-                outputFile = await folder.CreateFileAsync(outputName.ToString(), CreationCollisionOption.ReplaceExisting);
+                outputFile = await folder.CreateFileAsync(outputName.ToString(), CreationCollisionOption.GenerateUniqueName);
             }
         }
 

@@ -53,11 +53,14 @@ namespace eeee_textRandomizeUWP
         {
             var parameters = e.Parameter as Procedure_FileLists;
             myOptions = parameters.procedure.myOptions;
+
+            string tmp=null;
             foreach (var i in myOptions)
             {
                 if (i.Substring(3) =="5")
                 {
                     (FindName("option" + i.Substring(3) + "fc") as TextBox).IsEnabled = true;
+                    tmp = i;
                 }
                 else if (i.Substring(3) != "2")
                 {
@@ -70,6 +73,8 @@ namespace eeee_textRandomizeUWP
                 }
             }
             fileLists = parameters.fileLists;
+
+            if (tmp != null) myOptions.Remove(tmp);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -152,6 +157,8 @@ namespace eeee_textRandomizeUWP
             {
                 hand.job.Enqueue(int.Parse(i.Substring(3)));
             }
+
+            if (option5fc.IsEnabled) hand.job.Enqueue(5);
 
             bool state = await hand.DoJob(fileLists, another_file);
             if (state) return;

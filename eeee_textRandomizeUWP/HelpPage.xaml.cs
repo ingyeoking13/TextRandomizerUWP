@@ -38,7 +38,7 @@ namespace eeee_textRandomizeUWP
             useText.Text += Environment.NewLine;
             useText.Text += "각 옵션에 따라 추가 설정이 있을 수 있습니다. 하지만 모든 옵션은 공통적으로 출력 폴더를 정해야합니다. 마지막으로 문서는 반드시 UTF-8로 인코딩 되어있어야합니다."; 
             useText.Text += Environment.NewLine;
-            useText.Text += "다중 옵션을 선택할 때엔 옵션에 대한 순서를 지정할 수 있습니다. 이때 여러 옵션 과정들을 거쳐서 생성되는 파일들은 저장되지 않습니디. 프로세스 중간에는 저장되었다가 추후에 삭제됩니다.";
+            useText.Text += "다중 옵션을 선택할 때엔 옵션에 대한 순서를 지정할 수 있습니다(압축옵션 제외). 이때 여러 옵션 과정들을 거쳐서 생성되는 파일들은 저장되지 않습니디. 프로세스 중간에는 저장되었다가 추후에 삭제됩니다.";
 
             Option1Text.Text += Environment.NewLine;
             Option1Text.Text += "이 옵션의 목적은 파일에 존재하는 기존 문장을 두 개로 분할하기 위한 옵션입니다.";
@@ -74,7 +74,9 @@ namespace eeee_textRandomizeUWP
             Option5Text.Text += "이 옵션의 목적은 여러 파일에 대해 파일 묶음을 수행합니다.";
             Option5Text.Text += Environment.NewLine;
             Option5Text.Text += Environment.NewLine;
-            Option5Text.Text += "이 옵션에서는 추가로 숫자를 입력받습니다. 파일들을 입력된 숫자만큼 묶습니다. 만약 몇 개가 남는다면, 그 남는것 끼리 합칩니다.";
+            Option5Text.Text += "이 옵션에서는 추가로 숫자를 입력받습니다. 파일들을 입력된 숫자만큼 알집으로 묶습니다. 만약 몇 개가 남는다면, 그 남는것 끼리 합칩니다.";
+            Option5Text.Text += Environment.NewLine;
+            Option5Text.Text += "이 옵션은 사용자가 순서를 지정할 수 없는 옵션입니다. 즉, 항상 결과물을 압축하는 옵션이므로 마지막 작업으로 할당됩니다.";
 
             myProfile.Text += "Hello, This app is for who want to reproduce text files from a text file already have one.";
             myProfile.Text += Environment.NewLine;

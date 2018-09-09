@@ -161,29 +161,36 @@ namespace eeee_textRandomizeUWP.Models
 
                     if (doRandom) k = random.Next(from, to + 1);
 
+
                     for (int t = 0; t < 3; t++)
                     {
                         int tmp_cnt = k;
-                        for (int j = 0; j < tmp_cnt; j++)
+                        for (int j=0; j<tmp_cnt; j++)
                         {
-                            int now = random.Next(0, sL.Count);
+                            int now;
+                            if (sL.Count == 0) break;
+                             now = random.Next(0, sL.Count);
 
                             if (sL[now] == "") continue;
-                            if (now - 1 < 0 || sL[now - 1] == "") continue;
-                            if (now + 1 >= sL.Count || sL[now + 1] == "") continue;
+                            if (now - 1 >= 0 && sL[now - 1] == "") continue;
+                            if (now + 1 < sL.Count && sL[now + 1] == "") continue;
 
                             sL.Insert(now, "");
                             k--;
                         }
                     }
 
-                    for (int j=0; j<sL.Count && k>0; j++)
+                    if (k > 0)
                     {
-                        if (sL[j] == "") continue;
-                        if (j - 1 < 0 || sL[j - 1] == "") continue;
-                        if (j + 1 >= sL.Count || sL[j + 1] == "") continue;
-                        sL.Insert(j, "");
-                        k--;
+                        for (int j = 0; j < sL.Count; j++)
+                        {
+                            if (sL[j] == "") continue;
+                            if (j - 1 >= 0 && sL[j - 1] == "") continue;
+                            if (j + 1 < sL.Count && sL[j + 1] == "") continue;
+                            sL.Insert(j, "");
+                            k--;
+                            if (k == 0) break;
+                        }
                     }
 
                     StringBuilder str= new StringBuilder();
@@ -204,6 +211,7 @@ namespace eeee_textRandomizeUWP.Models
                     }
                 }
             }
+            /* deprecated another option, 
             else if(option==5)
             {
                 int cnt = 0;
@@ -253,6 +261,7 @@ namespace eeee_textRandomizeUWP.Models
                     sb.Clear();
                 }
             }
+            */
 
             return retLists;
         }
@@ -267,7 +276,7 @@ namespace eeee_textRandomizeUWP.Models
         {
             string[] vs =
                 str.ToString().Split(new[] {Environment.NewLine }, StringSplitOptions.None);
-            List<String> ret = new List<string>();
+            List<string> ret = new List<string>();
 
             foreach (string s in vs)
             {
